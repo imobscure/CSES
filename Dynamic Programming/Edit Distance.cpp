@@ -11,7 +11,7 @@ int main(){
 
 	int n=a.size(),m=b.size();
 
-	vector<vector<int>> dp(n+1,vector<int>(m+1,1e9));
+	vector<vector<int>> dp(n+1,vector<int>(m+1,1e9+7));
 	dp[0][0]=0;
 
 	for(int i=0;i<=n;i++){
