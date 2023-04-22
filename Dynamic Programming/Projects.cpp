@@ -16,18 +16,8 @@ using pi = pair<int,int>;
 #define re(i,n) for(int i=0;i<n;i++)
 #define reb(i,n) for(int i=n-1;i>=0;i--)
 #define test int t;cin>>t;while(t--)
- 
- 
-void setIO(string name = "") {
-	cin.tie(0)->sync_with_stdio(0); 
-	if (sz(name)) {
-		freopen((name + ".in").c_str(), "r", stdin); 
-		freopen((name + ".out").c_str(), "w", stdout);
-	}
-}
- 
+
 signed main(){
-	setIO();
 	
 	int n; cin>>n;
 	vector<pair<pair<int,int>,int>> v(n);
