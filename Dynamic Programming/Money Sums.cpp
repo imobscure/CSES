@@ -1,40 +1,45 @@
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 
+using namespace std ;
+using int64 = long long ;
+const int64 mod = 1e9+7 ;
 
-using namespace std;
+bool sum[100001] ;
 
-bool is_possible[100001][101];
+void solve()
+{
+    int n ;
+    cin >> n ;
+    int x[n] ;
+    for(int &xi : x)
+        cin >> xi ;
 
+    sum[0] = true ;
 
-int main(){
+    for(int &xi : x)
+        for(int sm = 100000; sm-xi >= 0; sm--)
+            sum[sm] |= sum[sm-xi] ;
 
-	int tt_coins; cin>>tt_coins;
-	int coin[tt_coins];
+    vector<int> pSum ;
+    for(int sm = 1; sm <= 100000; ++sm)
+        if(sum[sm])
+            pSum.push_back(sm) ;
 
-	for(auto &value:coin)cin>>value;
+    cout << pSum.size() << '\n' ;
+    for(int &sm : pSum)
+        cout << sm << " " ;
+}
 
-	is_possible[0][0]=true;
-
-	vector<int> ans;
-
-	for(int target=0; target <= 100000 ;++target){
-
-		for(int ith=0; ith < tt_coins ; ++ith){
-
-			is_possible[target][ith+1]=is_possible[target][ith];
-
-			if(target >= coin[ith])
-			is_possible[target][ith+1]=(is_possible[target][ith+1] || is_possible[target-coin[ith]][ith]);
-
-		}
-
-     if(is_possible[target][tt_coins] && target )ans.push_back(target);
-
-	}
-
-	cout<<ans.size()<<'\n';
-	for(auto target:ans)cout<<target<<" ";
-
-	return 0;
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int test = 1 ;
+    // cin >> test ;
+    for(int cas = 1; cas <= test; cas++)
+    {
+        solve() ;
+        cout << '\n' ;
+    }
+    return 0 ;
 }
