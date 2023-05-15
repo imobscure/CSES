@@ -1,54 +1,45 @@
 #include <bits/stdc++.h>
-using namespace std;
 
-#define int long long
+using namespace std ;
+using int64 = long long ;
+const int64 mod = 1e9+7 ;
 
-using vi = vector<int>;
-#define pb push_back
-#define all(x) begin(x), end(x)
-#define sz(x) (int) (x).size()
+void solve()
+{
+    int n ;
+    cin >> n ;
+    int x[n] ;
+    for(int &xi : x)
+        cin >> xi ;
 
-using pi = pair<int,int>;
-#define f first
-#define s second
-#define mp make_pair
+    vector<vector<int64>> dp(n, vector<int64>(n)) ;
+    int64 total = 0 ;
 
-#define re(i,n) for(int i=0;i<n;i++)
-#define reb(i,n) for(int i=n-1;i>=0;i--)
-#define test int t;cin>>t;while(t--)
+    for(int l = n-1; l >= 0; l--)
+    {
+        total += x[l] ;
+        for(int r = l; r < n; r++)
+        {
+            if(l == r)
+                dp[l][r] = x[l] ;
+            else
+                dp[l][r] = max(x[l]-dp[l+1][r], x[r]-dp[l][r-1]) ;
+        }
+    }
 
-
-void setIO(string name = "") {
-	cin.tie(0)->sync_with_stdio(0);
-	if (sz(name)) {
-		freopen((name + ".in").c_str(), "r", stdin);
-		freopen((name + ".out").c_str(), "w", stdout);
-	}
+    cout << (dp[0][n-1]+total)/2 ;
 }
 
-vector<vi> dp(5001,vi(5001,-1));
-vi a(5001);
-
-signed main(){
-	setIO();
-
-    int n; cin>>n;
-
-    re(i,n)cin>>a[i+1];
-
-
-    auto solve=[&](auto&& solve,int l,int r)->int{
-
-    	if(l>r)return 0ll;
-
-    	if(dp[l][r]!=-1)return dp[l][r];
-
-    	int back=a[r]+min(solve(solve,l+1,r-1),solve(solve,l,r-2));
-    	int frwd=a[l]+min(solve(solve,l+1,r-1),solve(solve,l+2,r));
-
-    	return dp[l][r]=max(back,frwd);
-    };
-
-    cout<<solve(solve,1,n);
-
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int test = 1 ;
+    // cin >> test ;
+    for(int cas = 1; cas <= test; cas++)
+    {
+        solve() ;
+        cout << '\n' ;
+    }
+    return 0 ;
 }
