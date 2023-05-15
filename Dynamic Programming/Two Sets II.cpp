@@ -20,9 +20,11 @@ void solve()
     vector<int64> dp(sum+1, 0) ;
     dp[0] = 1 ;
 
-    for(int nm = 2; nm <= n; nm++)
+    for(int nm = 1; nm <= n; nm++)
         for(int sm = sum; sm >= nm; sm--)
             (dp[sm] += dp[sm-nm]) %= mod ;
+
+    (dp[sum] *= 500000004) %= mod ;
 
     cout << dp[sum] ;
 }
