@@ -1,52 +1,52 @@
-#include <iostream>
-#include <vector>
- 
-using namespace std;
- 
- 
-int main(){
-	
-	int n; cin>>n;
-	int a[n]; 
-	
-	for(auto &val:a)cin>>val; 
-	
-	vector<int> dp(n+1,1e9+1);
-	
-	dp[0]=0;
-	
-	for(int idx=0;idx<n;++idx){
-		
-		int lo=0,hi=n,pos=0;
-		
-		while(lo<=hi){
-			int mid=lo+(hi-lo+1)/2;
-			
-			if(dp[mid]<=a[idx]){
-				pos=mid;
-				lo=mid+1;
-			}
-			else hi=mid-1;
-			
-		}
-		++pos;
-		
-		if(dp[pos-1]<a[idx] && dp[pos]>a[idx]){
-			dp[pos]=a[idx];
-		}
-		
-	}
-	
-	int ans=1;
-	
-	for(int i=n;i>=0;i--){
-		if(dp[i]!=(1e9+1)){
-			ans=i;
-			break;
-		}
-	}
-	
-	cout<<ans;
-	
-	return 0;
+#include <bits/stdc++.h>
+
+using namespace std ;
+using int64 = long long ;
+const int64 mod = 1e9+7 ;
+
+void solve()
+{
+    int n ;
+    cin >> n ;
+    int x[n] ;
+    for(int &xi : x)
+        cin >> xi ;
+
+    vector<int> length(n+1, INT_MAX) ;
+    length[0] = 0 ;
+    int ans = 0 ;
+
+    for(int &xi : x)
+    {
+        int lo = 0, hi = n, pos = 0 ;
+        while(lo <= hi)
+        {
+            int mid = lo + (hi-lo)/2 ;
+            if(length[mid] <= xi)
+            {
+                pos = mid ;
+                lo = mid+1 ;
+            }
+            else
+                hi = mid-1 ;
+        }
+        ++pos ;
+        if(length[pos-1] < xi and length[pos] > xi)
+            length[pos] = xi, ans = max(ans, pos) ;
+    }
+    cout << ans ;
+}
+
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int test = 1 ;
+    // cin >> test ;
+    for(int cas = 1; cas <= test; cas++)
+    {
+        solve() ;
+        cout << '\n' ;
+    }
+    return 0 ;
 }
