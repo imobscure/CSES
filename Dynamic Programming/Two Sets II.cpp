@@ -1,51 +1,42 @@
-#include <iostream>
- 
-using namespace std;
- 
-long long dp[63000][501];
- 
-int main(){
-	
-	int n; cin>>n;
-	
-	/*
-	
-	max sum = (500)*(501)/2 -> 125250 --> ~ 63000
-	
-	dp[x][i] -> number of ways to produce sum of x using first ith ele.
-	
-	space -> O(63000*500)
-	time -> O(63000*500)
-	
-	Transition state :
-	
-	dp[i][j] = dp[i-j][j-1] + dp[i][j-1];
-	
-	AC for 1 sec
-	
-	*/
-	
-	int sm=((n+1)*n)/2;
-	long long mod=1e9+7;
-	
-	dp[0][0]=1;
-	
-	if(sm%2)cout<<0;
-	else{
-		sm/=2;
-		
-		for(int i=0;i<=sm;i++){
-			for(int j=1;j<=n;j++){
-				dp[i][j]=dp[i][j-1];
-				if(i>=j){
-					dp[i][j]+=dp[i-j][j-1];
-					dp[i][j]%=mod;
-				}
-			}
-		}
-		
-		cout<<dp[sm][n-1]%mod;
-		
-	}
-	return 0;
+#include <bits/stdc++.h>
+
+using namespace std ;
+using int64 = long long ;
+const int64 mod = 1e9+7 ;
+
+void solve()
+{
+    int n ;
+    cin >> n ;
+
+    int sum = (n*(n+1))/2 ;
+    if(sum%2)
+    {
+        cout << 0 ;
+        return ;
+    }
+    sum /= 2 ;
+
+    vector<int64> dp(sum+1, 0) ;
+    dp[0] = 1 ;
+
+    for(int nm = 2; nm <= n; nm++)
+        for(int sm = sum; sm >= nm; sm--)
+            (dp[sm] += dp[sm-nm]) %= mod ;
+
+    cout << dp[sum] ;
+}
+
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int test = 1 ;
+    // cin >> test ;
+    for(int cas = 1; cas <= test; cas++)
+    {
+        solve() ;
+        cout << '\n' ;
+    }
+    return 0 ;
 }
