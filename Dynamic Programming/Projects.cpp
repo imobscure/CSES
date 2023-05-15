@@ -1,53 +1,60 @@
-#include <bits/stdc++.h> 
-using namespace std;
+#include <bits/stdc++.h>
  
-#define int long long
+using namespace std ;
+using int64 = long long ;
+const int64 mod = 1e9+7 ;
  
-using vi = vector<int>;
-#define pb push_back
-#define all(x) begin(x), end(x)
-#define sz(x) (int) (x).size()
+struct project
+{
+    int a, b, p ;
+};
  
-using pi = pair<int,int>;
-#define f first
-#define s second
-#define mp make_pair
+void solve()
+{
+    int n ;
+    cin >> n ;
+    vector<project> proj(n) ;
+    for(int idx = 0; idx < n; idx++)
+        cin >> proj[idx].a >> proj[idx].b >> proj[idx].p ;
  
-#define re(i,n) for(int i=0;i<n;i++)
-#define reb(i,n) for(int i=n-1;i>=0;i--)
-#define test int t;cin>>t;while(t--)
-
-signed main(){
-	
-	int n; cin>>n;
-	vector<pair<pair<int,int>,int>> v(n);
-	
-	re(i,n)cin>>v[i].f.f>>v[i].f.s>>v[i].s;
-	sort(all(v),[](pair<pi,int> a,pair<pi,int> b){return a.f.s<b.f.s;});
-	
-	set<int> range;
-	map<int,int> dp;
-	
-	range.insert({0,0});
-	dp[0]=0;
-	int prev=0;
-	
-	for(int i=0;i<n;i++){
-		
-		auto it=range.lower_bound(v[i].f.f);
+   sort(proj.begin(), proj.end(), [](project x, project y)
+        {
+            return x.b < y.b ;
+        }) ;
  
-		--it;
-		
-		dp[v[i].f.s]=dp[prev];
-		prev=v[i].f.s;
-		
-		dp[v[i].f.s]=max(dp[v[i].f.s],dp[*it]+v[i].s);
-		range.insert(v[i].f.s);
-
-	}
-	
-	int ans=0;
-	for(auto x:dp)ans=max(ans,x.s);
-	
-	cout<<ans;
+    map<int, int64> money ;
+    vector<int> prev ;
+ 
+    prev.push_back(0) ;
+    money[0] = 0 ;
+    int last = 0 ;
+ 
+    for(project &prj : proj)
+    {
+        auto it = lower_bound(prev.begin(), prev.end(), prj.a) ;
+        --it ;
+        money[prj.b] = max(money[last], money[*it]+prj.p) ;
+        last = prj.b ;
+        prev.push_back(prj.b) ;
+    }
+ 
+    int64 ans = 0 ;
+    for(auto amount : money)
+        ans = max(ans, amount.second) ;
+ 
+    cout << ans ;
+}
+ 
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int test = 1 ;
+    // cin >> test ;
+    for(int cas = 1; cas <= test; cas++)
+    {
+        solve() ;
+        cout << '\n' ;
+    }
+    return 0 ;
 }
